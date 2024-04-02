@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { logout } from '../utils/localstorage'
 import useAxios from './useAxios'
 
-const useLogin = ({ userId }) => {
+const useLogin = () => {
 	const { response, error, loading } = useAxios({
-		url: `http://localhost:3100/user/${userId}`,
+		url: `http://localhost:3100/api/user`,
 		method: 'GET',
 	})
 	const [loginInfo, setLoginInfo] = useState({
@@ -19,7 +19,7 @@ const useLogin = ({ userId }) => {
 			navigate('/')
 			logout()
 			return
-		} else if (response) setLoginInfo({ loading: loading, isLogin: true })
+		} else if (response) setLoginInfo({ info: response, loading: loading, isLogin: true })
 	}, [error, navigate, response, loading])
 
 	useEffect(() => {

@@ -63,7 +63,7 @@ const SignUp = () => {
 		resetRefClassName()
 		ConstraintCheck()
 		await axios
-			.post('http://localhost:3100/user/signup', { email, password, firstName: name })
+			.post('http://localhost:3100/api/auth/signup', { email, password, name })
 			.then((res) => {
 				const { result, token } = res.data
 				toast.success('Đăng nhập thành công!')

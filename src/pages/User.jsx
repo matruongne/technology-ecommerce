@@ -1,11 +1,8 @@
-import React from 'react'
 import useLogin from '../hooks/useLogin'
-import { useParams } from 'react-router-dom'
 
 const User = () => {
-	const { userId } = useParams()
-
-	const loginInfo = useLogin({ userId })
+	const loginInfo = useLogin()
+	console.log(loginInfo)
 	return <div>{loginInfo.loginInfo.isLogin ? 'true' : 'false'}</div>
 }
 

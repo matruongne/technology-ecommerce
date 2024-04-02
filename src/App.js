@@ -4,6 +4,10 @@ import Home from './pages/Home'
 import SignIn from './pages/SignIn'
 import { Toaster } from 'react-hot-toast'
 import SignUp from './pages/SignUp'
+import Category from './pages/Category'
+import ProductDetail from './pages/ProductDetail'
+import Blog from './pages/Blog'
+import BlogDetail from './pages/BlogDetail'
 
 const router = createBrowserRouter([
 	{
@@ -11,8 +15,25 @@ const router = createBrowserRouter([
 		element: <Home />,
 	},
 	{
-		path: '/users/:userId',
+		path: '/users/own',
 		element: <User />,
+	},
+	{
+		path: '/:category',
+		element: <Category />,
+	},
+	{
+		path: '/category/:productId',
+		element: <ProductDetail />,
+	},
+	,
+	{
+		path: '/blog',
+		element: <Blog />,
+	},
+	{
+		path: '/blog/:blogId',
+		element: <BlogDetail />,
 	},
 	{
 		path: '/signin',

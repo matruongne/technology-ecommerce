@@ -27,7 +27,7 @@ const Signin = () => {
 			setLoading(true)
 
 			await axios
-				.post(`http://localhost:3100/user/signin`, {
+				.post(`http://localhost:3100/api/auth/login`, {
 					email,
 					password,
 				})

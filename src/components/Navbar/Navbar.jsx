@@ -1,6 +1,7 @@
-import { IoMdSearch } from 'react-icons/io'
 import { FaCaretDown, FaCartShopping, FaCircleUser } from 'react-icons/fa6'
 import DarkMode from './DarkMode'
+import Search from '../Search/Search'
+import { useState } from 'react'
 
 const MenuLinks = [
 	{
@@ -47,6 +48,7 @@ const MenuLinks = [
 	},
 ]
 const Navbar = ({ handleOrderPopup }) => {
+	const [user, setUser] = useState(null)
 	return (
 		<div className="bg-white dark:bg-gray-900 dark:text-white duration-200 relative z-40">
 			<div className="py-4">
@@ -82,17 +84,18 @@ const Navbar = ({ handleOrderPopup }) => {
 					<div className="flex justify-between items-center gap-4">
 						{/* Search Bar section */}
 						<div className="relative group hidden sm:block">
-							<input type="text" placeholder="Search" className="search-bar" />
-							<IoMdSearch className="text-xl text-gray-600 group-hover:text-primary dark:text-gray-400 absolute top-1/2 -translate-y-1/2 right-3 duration-200" />
+							<Search />
 						</div>
-
 						{/* Order-button section */}
 						<button className="relative p-3" onClick={handleOrderPopup}>
-							<FaCartShopping className="text-xl text-gray-600 dark:text-gray-400" />
+							<FaCartShopping className="cursor-pointer text-xl text-gray-600 dark:text-gray-400" />
 							<div className="w-4 h-4 bg-red-500 text-white rounded-full absolute top-0 right-0 flex items-center justify-center text-xs">
 								4
 							</div>
 						</button>
+						{user && (
+							<FaCircleUser className="cursor-pointer text-3xl text-gray-600 dark:text-gray-400" />
+						)}
 						{/* Dark Mode section */}
 						<div>
 							<DarkMode />
