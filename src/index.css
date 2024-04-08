@@ -19,3 +19,13 @@ input[type='text'] {
 		@apply w-full rounded-full border border-gray-300 dark:border-gray-500 dark:bg-gray-800 px-2 py-1 mb-4;
 	}
 }
+
+input[type='text']:focus ~ .input-text,
+input[type='text']:not(:placeholder-shown) ~ .input-text {
+	@apply text-primary transform -translate-y-6 -translate-x-2 scale-75;
+}
+
+textarea[type='text']:focus ~ .input-text,
+textarea[type='text']:not(:placeholder-shown) ~ .input-text {
+	@apply text-primary transform -translate-y-9 -translate-x-2 scale-75;
+}

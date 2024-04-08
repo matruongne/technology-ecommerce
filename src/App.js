@@ -8,15 +8,32 @@ import Category from './pages/Category'
 import ProductDetail from './pages/ProductDetail'
 import Blog from './pages/Blog'
 import BlogDetail from './pages/BlogDetail'
+import { getLoggedInUserAsync } from '../src/redux/Slices/User/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+	checkAuthAsync,
+	selectLoggedInUser,
+	selectUserChecked,
+} from './redux/Slices/Auth/authSlice'
+import { useEffect } from 'react'
+import Protected from './components/auth/Protected'
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Home />,
+		element: (
+			<Protected>
+				<Home></Home>
+			</Protected>
+		),
 	},
 	{
-		path: '/users/own',
-		element: <User />,
+		path: '/user/own',
+		element: (
+			<Protected>
+				<User></User>
+			</Protected>
+		),
 	},
 	{
 		path: '/:category',
@@ -29,7 +46,11 @@ const router = createBrowserRouter([
 	,
 	{
 		path: '/blog',
-		element: <Blog />,
+		element: (
+			<Protected>
+				<Blog></Blog>
+			</Protected>
+		),
 	},
 	{
 		path: '/blog/:blogId',
@@ -46,12 +67,29 @@ const router = createBrowserRouter([
 ])
 
 function App() {
+	const dispatch = useDispatch()
+	const user = useSelector(selectLoggedInUser)
+	const userChecked = useSelector(selectUserChecked)
+
+	useEffect(() => {
+		dispatch(checkAuthAsync())
+	}, [dispatch])
+
+	useEffect(() => {
+		if (user) {
+			dispatch(getLoggedInUserAsync())
+		}
+	}, [dispatch, user])
 	return (
 		<>
-			<Toaster />
-			<div>
-				<RouterProvider router={router} />
-			</div>
+			{userChecked && (
+				<>
+					<Toaster />
+					<div>
+						<RouterProvider router={router} />
+					</div>
+				</>
+			)}
 		</>
 	)
 }

@@ -9,6 +9,7 @@ const useLogin = () => {
 		method: 'GET',
 	})
 	const [loginInfo, setLoginInfo] = useState({
+		info: null,
 		loading: true,
 		isLogin: false,
 	})
@@ -25,7 +26,7 @@ const useLogin = () => {
 	useEffect(() => {
 		checkLogin()
 	}, [checkLogin])
-	return { loginInfo }
+	return loginInfo
 }
 
 export default useLogin

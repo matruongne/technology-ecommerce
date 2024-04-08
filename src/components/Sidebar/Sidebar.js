@@ -5,6 +5,9 @@ import { FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { IoFunnelOutline } from 'react-icons/io5'
 
 import classNames from 'classnames'
+import { useDispatch } from 'react-redux'
+import { getAllCategoryAsync } from '../../redux/Slices/Category/categorySlice'
+import { getAllBrandAsync } from '../../redux/Slices/Brand/brandSlice'
 
 const sortOptions = [
 	{ name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -12,58 +15,34 @@ const sortOptions = [
 	{ name: 'Price: High to Low', sort: 'discountPrice', order: 'desc', current: false },
 ]
 
-const filters = [
-	{
-		id: 'category',
-		name: 'Category',
-		options: [
-			{
-				value: 'ca 1',
-				label: 'ca 1',
-				checked: false,
-			},
-			{
-				value: 'ca 2',
-				label: 'ca 2',
-				checked: false,
-			},
-			{
-				value: 'ca 3',
-				label: 'ca 3',
-				checked: false,
-			},
-		],
-	},
-	{
-		id: 'brand',
-		name: 'Brands',
-		options: [
-			{
-				value: 'br 1',
-				label: 'br 1',
-				checked: false,
-			},
-			{
-				value: 'br 2',
-				label: 'br 2',
-				checked: false,
-			},
-			{
-				value: 'br 3',
-				label: 'br 3',
-				checked: false,
-			},
-		],
-	},
-]
-
 const ITEMS_PER_PAGE = 10
 const totalPages = Math.ceil(20 / ITEMS_PER_PAGE)
 
-const Sidebar = ({ children }) => {
+const Sidebar = ({ children, title }) => {
 	const [filter, setFilter] = useState({})
 	const [sort, setSort] = useState({})
 	const [page, setPage] = useState(1)
+	const [categories, setCategories] = useState([])
+	const [brands, setBrands] = useState([])
+	const filters = [
+		{
+			id: 'category',
+			name: 'Category',
+			options: categories,
+		},
+		{
+			id: 'brand',
+			name: 'Brands',
+			options: brands,
+		},
+	]
+
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(getAllCategoryAsync()).then((result) => setCategories(result.payload))
+		dispatch(getAllBrandAsync()).then((result) => setBrands(result.payload))
+	}, [dispatch])
 
 	const handleFilter = (e, section, option) => {
 		console.log(e.target.checked)
@@ -109,7 +88,7 @@ const Sidebar = ({ children }) => {
 				<main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
 						<h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-							All Products
+							{title || 'All Products'}
 						</h1>
 
 						<div className="flex items-center">

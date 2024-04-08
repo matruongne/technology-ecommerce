@@ -88,8 +88,7 @@ const Hero = ({ handleOrder }) => {
 										>
 											<Button
 												text="Shop By Category"
-												bgColor="bg-primary"
-												textColor="text-white"
+												classNames={'py-2 px-8 rounded-full bg-primary text-white'}
 												handler={handleOrder}
 											/>
 										</div>

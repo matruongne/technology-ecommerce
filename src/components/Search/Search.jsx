@@ -24,7 +24,7 @@ const Search = () => {
 			price: 1000000,
 		},
 		{
-			id: 1,
+			id: 2,
 			name: 'item 1',
 			price: 1000000,
 		},
@@ -87,7 +87,6 @@ const Search = () => {
 				)}
 			>
 				<div className="relative">
-					{console.log(searchValue)}
 					<input
 						className={cx(
 							searchValue

@@ -7,7 +7,7 @@ export default {
 		extend: {
 			colors: {
 				primary: '#f42c37',
-				secondary: '#f42c37',
+				secondary: '#ff676f',
 				brandYellow: '#fdc62e',
 				brandGreen: '#2dcc6f',
 				brandBlue: '#1376f4',
@@ -22,5 +22,9 @@ export default {
 			},
 		},
 	},
-	plugins: [require('@tailwindcss/aspect-ratio'), require('@tailwindcss/forms')],
+	plugins: [
+		require('@tailwindcss/aspect-ratio'),
+		require('@tailwindcss/forms'),
+		require('@tailwindcss/line-clamp'),
+	],
 }

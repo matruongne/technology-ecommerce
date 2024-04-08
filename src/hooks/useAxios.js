@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
-import { getToken } from '../utils/localstorage'
 
 const useAxios = ({ url, method, body = null }) => {
 	const [response, setResponse] = useState(null)
@@ -9,11 +8,10 @@ const useAxios = ({ url, method, body = null }) => {
 
 	const fetchData = useCallback(async () => {
 		axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8'
-		axios.defaults.headers.post['Authorization'] = 'Bearer ' + getToken()
 		axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*'
 		await axios[method.toLowerCase()](url, JSON.parse(body))
 			.then((res) => {
-				setResponse(res)
+				setResponse(res.data)
 			})
 			.catch((err) => {
 				setError(err)
