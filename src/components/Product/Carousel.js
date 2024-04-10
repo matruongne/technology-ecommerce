@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { FaCaretLeft, FaCaretRight } from 'react-icons/fa6'
 
 const Carousel = ({ children: slides, imgs, autoSlide = false, autoSlideInterval = 3000 }) => {
 	const thumbnails = [...imgs]
@@ -23,23 +24,25 @@ const Carousel = ({ children: slides, imgs, autoSlide = false, autoSlideInterval
 				</div>
 				<div className="absolute inset-0 flex items-center justify-between p-4">
 					<button onClick={prev} className="bg-white rounded-full p-3 md:hidden">
-						<img className="h-[10px] w-[10px]" src="./images/icon-previous.svg" alt="" />
+						<FaCaretLeft className="h-[10px] w-[10px]" />
 					</button>
 					<button onClick={next} className="bg-white rounded-full p-3 md:hidden">
-						<img className="h-[10px] w-[10px]" src="./images/icon-next.svg" alt="" />
+						<FaCaretRight className="h-[10px] w-[10px]" />
 					</button>
 				</div>
 			</div>
-			<div className="hidden md:flex w-full gap-8 mt-8 h-20">
+			<div className="hidden md:flex w-full gap-8 mt-8">
 				{thumbnails.map((t, i) => (
 					<div
 						key={i}
 						onClick={() => setCurr(i)}
-						className="hover:cursor-pointer focus:opacity-20 rounded-xl w-[100px] h-[100px]"
+						className="hover:cursor-pointer focus:opacity-100 rounded-xl w-[100px] h-[100px]"
 					>
 						<div className={`rounded-xl ${curr === i && 'border-2 border-secondary'}`}>
 							<img
-								className={`rounded-xl w-[100px] h-[100px] ${curr === i && 'opacity-40'}`}
+								className={`rounded-xl w-[100px] h-[100px] ${
+									curr === i ? 'opacity-100' : 'opacity-50'
+								}`}
 								src={t}
 								alt=""
 							/>

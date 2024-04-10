@@ -17,6 +17,8 @@ import {
 } from './redux/Slices/Auth/authSlice'
 import { useEffect } from 'react'
 import Protected from './components/auth/Protected'
+import Cart from './pages/Cart'
+import Order from './pages/Order'
 
 const router = createBrowserRouter([
 	{
@@ -36,14 +38,37 @@ const router = createBrowserRouter([
 		),
 	},
 	{
-		path: '/:category',
-		element: <Category />,
+		path: '/shops',
+		element: (
+			<Protected>
+				<Category></Category>
+			</Protected>
+		),
 	},
 	{
 		path: '/category/:productId',
-		element: <ProductDetail />,
+		element: (
+			<Protected>
+				<ProductDetail></ProductDetail>
+			</Protected>
+		),
 	},
-	,
+	{
+		path: '/carts/own',
+		element: (
+			<Protected>
+				<Cart></Cart>
+			</Protected>
+		),
+	},
+	{
+		path: '/orders/own',
+		element: (
+			<Protected>
+				<Order></Order>
+			</Protected>
+		),
+	},
 	{
 		path: '/blog',
 		element: (
@@ -54,7 +79,11 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/blog/:blogId',
-		element: <BlogDetail />,
+		element: (
+			<Protected>
+				<BlogDetail></BlogDetail>
+			</Protected>
+		),
 	},
 	{
 		path: '/signin',

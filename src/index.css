@@ -29,3 +29,11 @@ textarea[type='text']:focus ~ .input-text,
 textarea[type='text']:not(:placeholder-shown) ~ .input-text {
 	@apply text-primary transform -translate-y-9 -translate-x-2 scale-75;
 }
+
+@layer utilities {
+	input[type='number']::-webkit-inner-spin-button,
+	input[type='number']::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}

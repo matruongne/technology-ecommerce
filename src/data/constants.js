@@ -10,4 +10,6 @@ const BannerData = {
 	title4: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque reiciendis',
 	bgColor: '#f42c37',
 }
-export { BannerData }
+const ITEMS_PER_PAGE = 3
+
+export { BannerData, ITEMS_PER_PAGE }

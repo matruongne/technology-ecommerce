@@ -38,6 +38,6 @@ export const brandSlice = createSlice({
 	},
 })
 
-export const selectAllCategories = (state) => state.brand.brands
+export const selectAllBrands = (state) => state.brand.brands
 
 export default brandSlice.reducer

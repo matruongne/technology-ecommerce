@@ -221,7 +221,7 @@ const BlogDetail = () => {
 							<div className="h-full pb-10 mt-8 sm:mt-16">
 								<div className="flex justify-between">
 									{/* Related Post*/}
-									{posts.posts.slice(0, 3).map((post, index) => (
+									{posts.posts?.slice(0, 3).map((post, index) => (
 										<div key={index}>
 											<button
 												onClick={() => {

@@ -1,44 +1,33 @@
-import { useParams } from 'react-router-dom'
 import Category2 from './../components/Category/Category2'
 import Navbar from '../components/Navbar/Navbar'
-import img1 from '../assets/Gadgets_Signup.png'
 import Sidebar from '../components/Sidebar/Sidebar'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectUserInfo } from '../redux/Slices/User/userSlice'
+import { useEffect, useState } from 'react'
+import { ITEMS_PER_PAGE } from '../data/constants'
+import { getProductsByFiltersAsync } from './../redux/Slices/Product/productSlice'
 
 const Category = () => {
-	const { category } = useParams()
-
+	const [filter, setFilter] = useState({})
+	const [sort, setSort] = useState({})
+	const [page, setPage] = useState(1)
+	const [products, setProducts] = useState([])
+	const [totalItems, setTotalItems] = useState('')
 	const userInfo = useSelector(selectUserInfo)
 
-	const title = category.toUpperCase()
+	const dispatch = useDispatch()
 
-	const data = [
-		{
-			id: 1,
-			title: 'Category',
-			price: 1000,
-			img: img1,
-		},
-		{
-			id: 2,
-			title: 'Category',
-			price: 1000,
-			img: img1,
-		},
-		{
-			id: 3,
-			title: 'Category',
-			price: 1000,
-			img: img1,
-		},
-		{
-			id: 4,
-			title: 'Category',
-			price: 1000,
-			img: img1,
-		},
-	]
+	useEffect(() => {
+		setPage(1)
+	}, [sort])
+
+	useEffect(() => {
+		const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
+		dispatch(getProductsByFiltersAsync({ filter, sort, pagination })).then((result) => {
+			setTotalItems(result.payload.totalItems)
+			setProducts(result.payload.products)
+		})
+	}, [dispatch, filter, sort, page])
 	return (
 		<div>
 			{userInfo && (
@@ -46,8 +35,16 @@ const Category = () => {
 					<Navbar userInfo={userInfo} />
 					<div className="dark:bg-gray-800">
 						<div className="flex container">
-							<Sidebar title={title}>
-								<Category2 data={data} />
+							<Sidebar
+								totalItems={totalItems}
+								filter={filter}
+								setFilter={setFilter}
+								sort={sort}
+								setSort={setSort}
+								page={page}
+								setPage={setPage}
+							>
+								<Category2 data={products} />
 							</Sidebar>
 						</div>
 					</div>

@@ -1,5 +1,5 @@
 import { Menu, Transition } from '@headlessui/react'
-import { FaCaretDown, FaCartShopping, FaCircleUser } from 'react-icons/fa6'
+import { FaCartShopping, FaCircleUser } from 'react-icons/fa6'
 import { MdLogout } from 'react-icons/md'
 import { IoBagCheckOutline } from 'react-icons/io5'
 import { PiUserList } from 'react-icons/pi'
@@ -16,44 +16,22 @@ const MenuLinks = [
 	{
 		id: 1,
 		name: 'Home',
-		link: '/#',
+		link: '/',
 	},
 	{
 		id: 2,
 		name: 'Shop',
-		link: '/#shop',
+		link: '/shops',
 	},
 	{
 		id: 3,
 		name: 'About',
-		link: '/#about',
+		link: '/about',
 	},
 	{
 		id: 4,
 		name: 'Blogs',
-		link: '/#blog',
-	},
-	{
-		id: 5,
-		name: 'Link',
-		link: '/#link',
-		// DropdownLinks: [
-		// 	{
-		// 		id: 1,
-		// 		name: 'Trending Products',
-		// 		link: '/#',
-		// 	},
-		// 	{
-		// 		id: 2,
-		// 		name: 'Best Selling',
-		// 		link: '/#',
-		// 	},
-		// 	{
-		// 		id: 3,
-		// 		name: 'Top Rated',
-		// 		link: '/#',
-		// 	},
-		// ],
+		link: '/blog',
 	},
 ]
 const Navbar = ({ userInfo }) => {
@@ -130,6 +108,9 @@ const Navbar = ({ userInfo }) => {
 												<Menu.Item>
 													{({ active }) => (
 														<button
+															onClick={() => {
+																navigate('/orders/own')
+															}}
 															className={`${
 																active ? 'bg-secondary text-white' : 'text-gray-900'
 															} group font-semibold flex w-full items-center rounded-md px-2 py-3 text-sm`}

@@ -8,6 +8,7 @@ import classNames from 'classnames'
 import { useDispatch } from 'react-redux'
 import { getAllCategoryAsync } from '../../redux/Slices/Category/categorySlice'
 import { getAllBrandAsync } from '../../redux/Slices/Brand/brandSlice'
+import { ITEMS_PER_PAGE } from '../../data/constants'
 
 const sortOptions = [
 	{ name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -15,13 +16,9 @@ const sortOptions = [
 	{ name: 'Price: High to Low', sort: 'discountPrice', order: 'desc', current: false },
 ]
 
-const ITEMS_PER_PAGE = 10
-const totalPages = Math.ceil(20 / ITEMS_PER_PAGE)
+const Sidebar = ({ totalItems, children, filter, setFilter, sort, setSort, page, setPage }) => {
+	const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
 
-const Sidebar = ({ children, title }) => {
-	const [filter, setFilter] = useState({})
-	const [sort, setSort] = useState({})
-	const [page, setPage] = useState(1)
 	const [categories, setCategories] = useState([])
 	const [brands, setBrands] = useState([])
 	const filters = [
@@ -45,7 +42,6 @@ const Sidebar = ({ children, title }) => {
 	}, [dispatch])
 
 	const handleFilter = (e, section, option) => {
-		console.log(e.target.checked)
 		const newFilter = { ...filter }
 		if (e.target.checked) {
 			if (newFilter[section.id]) {
@@ -57,38 +53,26 @@ const Sidebar = ({ children, title }) => {
 			const index = newFilter[section.id].findIndex((el) => el === option.value)
 			newFilter[section.id].splice(index, 1)
 		}
-		console.log({ newFilter })
 
 		setFilter(newFilter)
 	}
 
 	const handleSort = (e, option) => {
 		const sort = { _sort: option.sort, _order: option.order }
-		console.log({ sort })
 		setSort(sort)
 	}
 
 	const handlePage = (page) => {
-		console.log({ page })
 		setPage(page)
 	}
-
-	useEffect(() => {
-		const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
-		console.log(pagination)
-	}, [filter, sort, page])
-
-	useEffect(() => {
-		setPage(1)
-	}, [sort])
 
 	return (
 		<div className="bg-gray-100 dark:bg-gray-800 dark:text-white">
 			<div>
-				<main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+				<main className="mx-auto w-full">
 					<div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
 						<h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white">
-							{title || 'All Products'}
+							All Products
 						</h1>
 
 						<div className="flex items-center">
@@ -102,7 +86,6 @@ const Sidebar = ({ children, title }) => {
 										/>
 									</Menu.Button>
 								</div>
-
 								<Transition
 									as={Fragment}
 									enter="transition ease-out duration-100"
@@ -165,7 +148,7 @@ const Sidebar = ({ children, title }) => {
 											<>
 												<h3 className="-my-3 flow-root">
 													<Disclosure.Button className="flex w-full items-center justify-between py-3 text-sm text-gray-400 dark:text-gray-100 hover:text-gray-500">
-														<span className="font-medium text-gray-900 dark:text-gray-100">
+														<span className="font-semibold text-base text-gray-900 dark:text-gray-100">
 															{section.name}
 														</span>
 														<span className="ml-6 flex items-center">
@@ -192,7 +175,7 @@ const Sidebar = ({ children, title }) => {
 																/>
 																<label
 																	htmlFor={`filter-${section.id}-${optionIdx}`}
-																	className="ml-3 text-sm text-gray-600"
+																	className="ml-3 text-sm text-gray-600 dark:text-gray-100"
 																>
 																	{option.label}
 																</label>
@@ -231,9 +214,9 @@ const Sidebar = ({ children, title }) => {
 								<p className="text-sm text-gray-700">
 									Showing <span className="font-medium">{(page - 1) * ITEMS_PER_PAGE + 1}</span> to{' '}
 									<span className="font-medium">
-										{page * ITEMS_PER_PAGE > 20 ? 20 : page * ITEMS_PER_PAGE}
+										{page * ITEMS_PER_PAGE > totalItems ? totalItems : page * ITEMS_PER_PAGE}
 									</span>{' '}
-									of <span className="font-medium">{20}</span> results
+									of <span className="font-medium">{totalItems}</span> results
 								</p>
 							</div>
 							<div>
@@ -256,8 +239,8 @@ const Sidebar = ({ children, title }) => {
 											onClick={(e) => handlePage(index + 1)}
 											aria-current="page"
 											className={`relative cursor-pointer z-10 inline-flex items-center ${
-												index + 1 === page ? 'bg-indigo-600 text-white' : 'text-gray-400'
-											} px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+												index + 1 === page ? 'bg-primary text-white' : 'text-gray-400'
+											} px-4 py-2 text-sm font-semibold  focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary`}
 										>
 											{index + 1}
 										</div>
