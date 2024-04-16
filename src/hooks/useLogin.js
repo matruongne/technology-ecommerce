@@ -5,7 +5,7 @@ import useAxios from './useAxios'
 
 const useLogin = () => {
 	const { response, error, loading } = useAxios({
-		url: `http://localhost:3100/api/user`,
+		url: `http://localhost:3300/api/user`,
 		method: 'GET',
 	})
 	const [loginInfo, setLoginInfo] = useState({

@@ -1,35 +1,7 @@
-import React from 'react'
 import Slider from 'react-slick'
-import Image1 from '../../assets/Heros/headphone.png'
-import Image2 from '../../assets/Category/vr.png'
-import Image3 from '../../assets/Category/macbook.png'
 import Button from '../Button/Button'
 
-const HeroData = [
-	{
-		id: 1,
-		img: Image1,
-		subtitle: 'Beats Solo',
-		title: 'Wireless',
-		title2: 'Headphone',
-	},
-	{
-		id: 2,
-		img: Image2,
-		subtitle: 'Beats Solo',
-		title: 'Wireless',
-		title2: 'Virtual',
-	},
-	{
-		id: 1,
-		img: Image3,
-		subtitle: 'Beats Solo',
-		title: 'Branded',
-		title2: 'Laptops',
-	},
-]
-
-const Hero = ({ handleOrder }) => {
+const Hero = ({ handleOrder, HeroData }) => {
 	const settings = {
 		dots: false,
 		arrows: false,
@@ -88,7 +60,7 @@ const Hero = ({ handleOrder }) => {
 										>
 											<Button
 												text="Shop By Category"
-												classNames={'py-2 px-8 rounded-full bg-primary text-white'}
+												classNames={'py-2 px-8 rounded-full bg-primary text-white font-semibold'}
 												handler={handleOrder}
 											/>
 										</div>

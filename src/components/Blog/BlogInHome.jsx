@@ -10,8 +10,8 @@ const Blog = ({ posts }) => {
 			<div className="container">
 				{/* Header section */}
 				<div className="text-center mb-10 max-w-[600px] mx-auto space-y-2">
-					<h1 className="text-3xl font-bold lg:text-4xl">Recent News</h1>
-					<p className="text-xs text-gray-400">Explore Our Posts </p>
+					<h1 className="text-3xl font-bold">Recent News</h1>
+					<p className="text-base text-gray-400">Explore Our Posts </p>
 				</div>
 				{posts && (
 					<div className="flex justify-between">

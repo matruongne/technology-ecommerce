@@ -3,7 +3,7 @@ import axios from 'axios'
 export function createUser(userData) {
 	return new Promise(async (resolve, reject) => {
 		await axios
-			.post('http://localhost:3100/api/auth/signup', userData)
+			.post('http://localhost:3300/api/auth/signup', userData)
 			.then((response) => {
 				resolve({ data: response.data })
 			})
@@ -16,7 +16,7 @@ export function createUser(userData) {
 export function loginUser(loginInfo) {
 	return new Promise(async (resolve, reject) => {
 		await axios
-			.post('http://localhost:3100/api/auth/login', loginInfo)
+			.post('http://localhost:3300/api/auth/login', loginInfo)
 			.then((response) => {
 				resolve({ data: response.data })
 			})
@@ -29,7 +29,7 @@ export function loginUser(loginInfo) {
 export function checkAuth() {
 	return new Promise(async (resolve, reject) => {
 		await axios
-			.get('http://localhost:3100/api/auth/check')
+			.get('http://localhost:3300/api/auth/check')
 			.then((response) => {
 				resolve({ data: response.data })
 			})
@@ -42,7 +42,7 @@ export function checkAuth() {
 export function signOut() {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const response = await axios.get('http://localhost:3100/api/auth/logout')
+			const response = await axios.get('http://localhost:3300/api/auth/logout')
 			console.log(response)
 			if ((response.data = 'OK')) {
 				resolve({ data: 'success' })

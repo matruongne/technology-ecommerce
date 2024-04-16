@@ -202,16 +202,16 @@ const ProductDetail = () => {
 
 												<div className="flex items-start justify-center">
 													<button
-														className="bg-secondary hover:bg-primary/90 py-2 px-5 rounded-lg font-bold text-white text-3xl"
+														className="bg-secondary hover:bg-primary/90 py-2 px-5 rounded-l-lg font-bold text-white text-3xl"
 														onClick={() => setQuantity((prev) => prev - 1)}
 													>
 														-
 													</button>
-													<span className="py-2 px-6 rounded-lg text-2xl text-primary">
+													<span className="pt-2 pb-[3px] px-5 text-2xl leading-relaxed h-full text-primary border border-primary">
 														{quantity}
 													</span>
 													<button
-														className="bg-secondary hover:bg-primary/90 py-2 px-4 rounded-lg font-bold text-white text-3xl"
+														className="bg-secondary hover:bg-primary/90 py-2 px-4 rounded-r-lg font-bold text-white text-3xl"
 														onClick={() => setQuantity((prev) => prev + 1)}
 													>
 														+
@@ -243,7 +243,7 @@ const ProductDetail = () => {
 								</div>
 							</div>
 
-							{product.highlights && (
+							{JSON.parse(product.highlights) && (
 								<div className="mt-10">
 									<h3 className="text-2xl font-medium text-gray-900 dark:text-gray-100">
 										Highlights
@@ -251,7 +251,7 @@ const ProductDetail = () => {
 
 									<div className="mt-4">
 										<ul className="list-disc space-y-2 pl-4 text-base">
-											{product.highlights.map((highlight, index) => (
+											{JSON.parse(product?.highlights)?.map((highlight, index) => (
 												<li key={index} className="text-gray-400">
 													<span className="text-gray-600 dark:text-gray-300">{highlight}</span>
 												</li>

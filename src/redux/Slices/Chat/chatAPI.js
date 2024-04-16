@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-export function getLoggedInUserOrders() {
+export function createConversation(conversation) {
 	return new Promise(async (resolve) => {
 		await axios
-			.get('http://localhost:3300/api/orders/own/')
+			.post('http://localhost:3300/api/conversations/', conversation)
 			.then((response) => {
 				resolve({ data: response.data })
 			})
@@ -13,10 +13,10 @@ export function getLoggedInUserOrders() {
 	})
 }
 
-export function getPostsUser() {
+export function sendMessage(message) {
 	return new Promise(async (resolve) => {
 		await axios
-			.get('http://localhost:3300/api/post/own/')
+			.post('http://localhost:3300/api/message/', message)
 			.then((response) => {
 				resolve({ data: response.data })
 			})
@@ -26,23 +26,10 @@ export function getPostsUser() {
 	})
 }
 
-export function getLoggedInUser() {
+export function getConversation(userId) {
 	return new Promise(async (resolve) => {
 		await axios
-			.get('http://localhost:3300/api/user/own')
-			.then((response) => {
-				resolve({ data: response.data })
-			})
-			.catch((error) => {
-				console.log(error)
-			})
-	})
-}
-
-export function updateUser(update) {
-	return new Promise(async (resolve) => {
-		await axios
-			.patch(`http://localhost:3300/api/user/${update.id}`, update)
+			.get('http://localhost:3300/api/conversations/' + userId)
 			.then((response) => {
 				resolve({ data: response.data })
 			})

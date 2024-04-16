@@ -7,28 +7,19 @@ import HeadlessTippy from '@tippyjs/react/headless'
 
 import useDebounce from '../../hooks/useDebounce'
 import cx from 'classnames'
+import axios from 'axios'
+import { GiTechnoHeart } from 'react-icons/gi'
+import { useNavigate } from 'react-router-dom'
+
 const Search = () => {
 	const [searchResult, setSearchResult] = useState([])
 	const [searchValue, setSearchValue] = useState('')
-	const [showResult, setShowResult] = useState(true)
+	const [showResult, setShowResult] = useState(false)
 	const [loading, setLoading] = useState(false)
-
+	const navigate = useNavigate()
 	const inputRef = useRef()
 
 	const debounceValue = useDebounce(searchValue, 500)
-
-	const fakeData = [
-		{
-			id: 1,
-			name: 'item 1',
-			price: 1000000,
-		},
-		{
-			id: 2,
-			name: 'item 1',
-			price: 1000000,
-		},
-	]
 
 	useEffect(() => {
 		if (debounceValue.trim() === '') {
@@ -39,9 +30,11 @@ const Search = () => {
 		const fetchApi = async () => {
 			setLoading(true)
 
-			const result = fakeData
+			const result = await axios.get(
+				'http://localhost:3300/api/products/search?title=' + searchValue
+			)
 
-			setSearchResult(result)
+			setSearchResult(result.data)
 
 			setLoading(false)
 		}
@@ -51,37 +44,60 @@ const Search = () => {
 	const handleHideResult = () => {
 		setShowResult(false)
 	}
-
 	return (
 		<span>
 			<HeadlessTippy
 				interactive={true}
 				onClickOutside={handleHideResult}
-				visible={showResult && searchResult.length > 0}
+				visible={showResult}
 				render={(attrs) => (
 					<div
-						className="z-[9999] rounded-md bg-gray-300 w-[350px] min-h-[100px] text-gray-800"
+						className="z-[9999] divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none w-[400px] min-h-[100px] text-gray-800"
 						tabIndex="-1"
+						onMouseLeave={() => setShowResult(false)}
 						{...attrs}
 					>
 						<div>
 							<h4 className="text-center p-3 uppercase font-bold">Products</h4>
-							{searchResult ? (
-								searchResult.map((result, index) => {
-									return (
-										<div
-											key={result.id}
-											className="flex justify-between p-6 hover:bg-gray-500 last:rounded-b-md"
-										>
-											<span className="">{index + 1}</span>
-											<span className="">{result.name}</span>
-											<span className="">{result.price}</span>
-										</div>
-									)
-								})
-							) : (
-								<div>Not found...</div>
-							)}
+							<div className="max-h-[480px] overflow-y-auto">
+								{searchResult.length > 0 ? (
+									searchResult?.map((result, index) => {
+										return (
+											<button
+												onClick={() => navigate('/category/' + result.id)}
+												key={result.id}
+												className="flex w-full cursor-pointer justify-between items-center p-4 hover:bg-gray-300 last:rounded-b-md"
+											>
+												<div className="flex gap-2">
+													{result?.thumbnail ? (
+														<img
+															src={result.thumbnail}
+															alt={result.title}
+															className="h-14 w-[72px] rounded-md border object-cover object-center"
+														/>
+													) : (
+														<GiTechnoHeart className="m-2 h-12 w-18 rounded-md border object-cover object-center" />
+													)}
+													<span className="text-lg font-semibold flex justify-between flex-col items-start">
+														<span className="line-clamp-1">{result.title}</span>
+														<span className="line-clamp-2 text-sm text-gray-600 font-normal">
+															{result.description}
+														</span>
+													</span>
+												</div>
+												<div>
+													<p className="text-base block font-semibold text-primary">
+														${result.discountPrice}
+													</p>
+													<p className="text-gray-400 line-through">${result.price}</p>
+												</div>
+											</button>
+										)
+									})
+								) : (
+									<div className="text-gray-800 text-center">Not found...</div>
+								)}
+							</div>
 						</div>
 					</div>
 				)}
@@ -100,6 +116,7 @@ const Search = () => {
 						onChange={(e) => {
 							if (!e.target.value.startsWith(' ')) setSearchValue(e.target.value)
 						}}
+						onMouseEnter={() => setShowResult(true)}
 						onFocus={() => setShowResult(true)}
 					/>
 					{!!searchValue && !loading && (
@@ -129,5 +146,3 @@ const Search = () => {
 }
 
 export default Search
-
-//

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { addToCart, getCartByUser, updateCart } from './cartAPI'
+import { DeleteFromCart, addToCart, getCartByUser, resetCart, updateCart } from './cartAPI'
 import toast from 'react-hot-toast'
 
 const initialState = {
@@ -21,6 +21,17 @@ export const getCartByUserAsync = createAsyncThunk('cart/getCartByUser', async (
 export const updateCartAsync = createAsyncThunk('cart/updateCart', async (cart) => {
 	const response = await updateCart(cart)
 	toast.success('Update quanlity to cart')
+	return response.data
+})
+
+export const DeleteFromCartAsync = createAsyncThunk('cart/DeleteFromCart', async (cartId) => {
+	const response = await DeleteFromCart(cartId)
+	toast.success('Delete from cart')
+	return { data: response.data, cartId }
+})
+
+export const resetCartAsync = createAsyncThunk('cart/resetCart', async () => {
+	const response = await resetCart()
 	return response.data
 })
 
@@ -51,6 +62,22 @@ export const cartSlice = createSlice({
 				state.status = 'idle'
 				const index = state.carts.findIndex((item) => item.id === action.payload.id)
 				state.carts[index] = action.payload
+			})
+			.addCase(DeleteFromCartAsync.pending, (state) => {
+				state.status = 'loading'
+			})
+			.addCase(DeleteFromCartAsync.fulfilled, (state, action) => {
+				state.status = 'idle'
+				console.log(action.payload)
+				const index = state.carts.findIndex((item) => item.id === action.payload.cartId)
+				state.carts.splice(index, 1)
+			})
+			.addCase(resetCartAsync.pending, (state) => {
+				state.status = 'loading'
+			})
+			.addCase(resetCartAsync.fulfilled, (state, action) => {
+				state.status = 'idle'
+				state.carts = []
 			})
 	},
 })

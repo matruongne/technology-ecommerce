@@ -157,7 +157,7 @@ const BlogDetail = () => {
 									className="text-white px-4 py-3 bg-secondary hover:bg-primary rounded-lg"
 									onClick={() => {
 										setOpen(!open)
-										setImage(postDetail.post.images[0])
+										setImage(postDetail.post?.images[0])
 										setTitle(postDetail.post.title)
 										setBodyText(postDetail.post.text)
 										setModalData({
@@ -175,9 +175,9 @@ const BlogDetail = () => {
 						</div>
 						<div className="py-6 mx-auto">
 							<div className="max-w-6xl px-10 py-6 mx-auto bg-gray-50">
-								{postDetail.post.images.length > 0 ? (
+								{postDetail.post?.images.length > 0 ? (
 									<img
-										src={postDetail.post.images[0]}
+										src={postDetail.post?.images[0]}
 										alt={postDetail.post.title}
 										className="object-cover w-full shadow-sm h-full rounded-md"
 									/>
@@ -196,9 +196,9 @@ const BlogDetail = () => {
 									</div>
 									<div className="font-light text-gray-600">
 										<div className="flex items-center">
-											{postDetail.post.poster.images ? (
+											{postDetail.post.poster?.images ? (
 												<img
-													src={postDetail.post.poster.images}
+													src={postDetail.post.poster?.images}
 													className="hidden object-cover w-14 h-14 rounded-full sm:block border-primary border-2"
 												/>
 											) : (
@@ -233,9 +233,9 @@ const BlogDetail = () => {
 												}}
 											>
 												<div className="cursor-pointer bg-gray-200 border-r border-gray-300 shadow-[3.0px_6.0px_18.0px_rgba(0,0,0,0.18)] rounded-2xl">
-													{post.images.length > 0 ? (
+													{post?.images.length > 0 ? (
 														<img
-															src={post.images[0]}
+															src={post?.images[0]}
 															alt={post.title}
 															className="rounded-t-2xl object-cover w-[340px] h-[250px]"
 														/>
@@ -250,9 +250,9 @@ const BlogDetail = () => {
 														</div>
 														<div className="flex items-end justify-between my-4 m-8">
 															<div className="flex items-center">
-																{post.poster[0].images ? (
+																{post.poster[0]?.images ? (
 																	<img
-																		src={post.poster[0].images}
+																		src={post.poster[0]?.images}
 																		className="w-[40px] h-[40px] rounded-full border-primary border"
 																	/>
 																) : (
@@ -316,9 +316,9 @@ const BlogDetail = () => {
 										className="flex items-center w-full mx-auto bg-gray-300 border border-gray-200 rounded-lg shadow-lg mt-4"
 									>
 										<div className="flex items-center">
-											{comment.commentator.images ? (
+											{comment.commentator?.images ? (
 												<img
-													src={comment.commentator.images}
+													src={comment.commentator?.images}
 													className="hidden object-cover w-14 h-14 mx-4 rounded-full sm:block"
 												/>
 											) : (

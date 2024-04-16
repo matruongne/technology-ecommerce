@@ -19,6 +19,14 @@ import { useEffect } from 'react'
 import Protected from './components/auth/Protected'
 import Cart from './pages/Cart'
 import Order from './pages/Order'
+import CheckOut from './pages/CheckOut'
+import OrderSuccess from './pages/OrderSuccess'
+import OrderDetail from './pages/OrderDetail'
+import PageNotFound from './pages/404'
+import ProtectedAdmin from './components/auth/ProtectedAdmin'
+import AdminHome from './pages/AdminHome'
+import AddProduct from './pages/AddProduct'
+import AdminOrders from './pages/AdminOrders'
 
 const router = createBrowserRouter([
 	{
@@ -27,6 +35,38 @@ const router = createBrowserRouter([
 			<Protected>
 				<Home></Home>
 			</Protected>
+		),
+	},
+	{
+		path: '/admin',
+		element: (
+			<ProtectedAdmin>
+				<AdminHome></AdminHome>
+			</ProtectedAdmin>
+		),
+	},
+	{
+		path: '/admin/add-product',
+		element: (
+			<ProtectedAdmin>
+				<AddProduct></AddProduct>
+			</ProtectedAdmin>
+		),
+	},
+	{
+		path: '/admin/edit-product/:id',
+		element: (
+			<ProtectedAdmin>
+				<AddProduct></AddProduct>
+			</ProtectedAdmin>
+		),
+	},
+	{
+		path: '/admin/orders',
+		element: (
+			<ProtectedAdmin>
+				<AdminOrders></AdminOrders>
+			</ProtectedAdmin>
 		),
 	},
 	{
@@ -70,6 +110,30 @@ const router = createBrowserRouter([
 		),
 	},
 	{
+		path: '/orders/:id',
+		element: (
+			<Protected>
+				<OrderDetail></OrderDetail>
+			</Protected>
+		),
+	},
+	{
+		path: '/checkout',
+		element: (
+			<Protected>
+				<CheckOut></CheckOut>
+			</Protected>
+		),
+	},
+	{
+		path: '/order-success/:id',
+		element: (
+			<Protected>
+				<OrderSuccess></OrderSuccess>
+			</Protected>
+		),
+	},
+	{
 		path: '/blog',
 		element: (
 			<Protected>
@@ -92,6 +156,10 @@ const router = createBrowserRouter([
 	{
 		path: '/signup',
 		element: <SignUp />,
+	},
+	{
+		path: '*',
+		element: <PageNotFound></PageNotFound>,
 	},
 ])
 

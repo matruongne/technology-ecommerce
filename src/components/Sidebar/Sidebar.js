@@ -1,14 +1,16 @@
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { CiCirclePlus, CiCircleMinus } from 'react-icons/ci'
-import { useState, Fragment, useEffect } from 'react'
+import { Fragment, useEffect } from 'react'
 import { FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa6'
 import { IoFunnelOutline } from 'react-icons/io5'
 
 import classNames from 'classnames'
-import { useDispatch } from 'react-redux'
-import { getAllCategoryAsync } from '../../redux/Slices/Category/categorySlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllCategoryAsync, selectAllCategories } from '../../redux/Slices/Category/categorySlice'
 import { getAllBrandAsync } from '../../redux/Slices/Brand/brandSlice'
 import { ITEMS_PER_PAGE } from '../../data/constants'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { selectAllBrands } from '../../redux/Slices/Brand/brandSlice'
 
 const sortOptions = [
 	{ name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
@@ -19,8 +21,8 @@ const sortOptions = [
 const Sidebar = ({ totalItems, children, filter, setFilter, sort, setSort, page, setPage }) => {
 	const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
 
-	const [categories, setCategories] = useState([])
-	const [brands, setBrands] = useState([])
+	const categories = useSelector(selectAllCategories)
+	const brands = useSelector(selectAllBrands)
 	const filters = [
 		{
 			id: 'category',
@@ -35,11 +37,28 @@ const Sidebar = ({ totalItems, children, filter, setFilter, sort, setSort, page,
 	]
 
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
+	const location = useLocation()
 
 	useEffect(() => {
-		dispatch(getAllCategoryAsync()).then((result) => setCategories(result.payload))
-		dispatch(getAllBrandAsync()).then((result) => setBrands(result.payload))
+		dispatch(getAllCategoryAsync())
+		dispatch(getAllBrandAsync())
 	}, [dispatch])
+
+	useEffect(() => {
+		const searchParams = new URLSearchParams(location.search)
+		const params = {}
+
+		for (const [key, value] of searchParams.entries()) {
+			if (!params[key]) {
+				params[key] = [value]
+			} else {
+				params[key].push(value)
+			}
+		}
+
+		setFilter(params)
+	}, [location.search])
 
 	const handleFilter = (e, section, option) => {
 		const newFilter = { ...filter }
@@ -54,6 +73,23 @@ const Sidebar = ({ totalItems, children, filter, setFilter, sort, setSort, page,
 			newFilter[section.id].splice(index, 1)
 		}
 
+		const searchParams = new URLSearchParams()
+
+		for (const key in newFilter) {
+			if (Array.isArray(newFilter[key])) {
+				newFilter[key].forEach((value) => {
+					searchParams.append(key, value)
+				})
+			} else {
+				searchParams.append(key, newFilter[key])
+			}
+		}
+
+		const currentUrl = new URL(window.location.href)
+		currentUrl.search = searchParams.toString()
+
+		navigate(currentUrl.pathname + currentUrl.search)
+
 		setFilter(newFilter)
 	}
 
@@ -64,6 +100,21 @@ const Sidebar = ({ totalItems, children, filter, setFilter, sort, setSort, page,
 
 	const handlePage = (page) => {
 		setPage(page)
+	}
+
+	const isFilterMatch = (filter, filters) => {
+		for (const key in filter) {
+			const filterValues = filter[key]
+			const filterOptions = filters.section.id === key
+			if (filterOptions) {
+				for (const value of filterValues) {
+					if (filters.option.value === value) {
+						return true
+					}
+				}
+			}
+		}
+		return false
 	}
 
 	return (
@@ -169,7 +220,7 @@ const Sidebar = ({ totalItems, children, filter, setFilter, sort, setSort, page,
 																	name={`${section.id}[]`}
 																	defaultValue={option.value}
 																	type="checkbox"
-																	defaultChecked={option.checked}
+																	defaultChecked={isFilterMatch(filter, { option, section })}
 																	onChange={(e) => handleFilter(e, section, option)}
 																	className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
 																/>

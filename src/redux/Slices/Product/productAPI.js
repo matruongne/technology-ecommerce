@@ -25,7 +25,7 @@ export function getProductsByFilters(filter, sort, pagination, admin) {
 
 	return new Promise(async (resolve) => {
 		await axios
-			.get(`http://localhost:3100/api/products/?` + queryString)
+			.get(`http://localhost:3300/api/products/?` + queryString)
 			.then(async (response) => {
 				const totalItems = await response.headers.get('X-Total-Count')
 				resolve({ data: { products: response.data, totalItems: +totalItems } })
@@ -39,7 +39,33 @@ export function getProductsByFilters(filter, sort, pagination, admin) {
 export function getProductById(productId) {
 	return new Promise(async (resolve) => {
 		await axios
-			.get(`http://localhost:3100/api/products/` + productId)
+			.get(`http://localhost:3300/api/products/` + productId)
+			.then((response) => {
+				resolve({ data: response.data })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	})
+}
+
+export function createProduct(product) {
+	return new Promise(async (resolve) => {
+		await axios
+			.post(`http://localhost:3300/api/products/`, product)
+			.then((response) => {
+				resolve({ data: response.data })
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+	})
+}
+
+export function updateProduct(update) {
+	return new Promise(async (resolve) => {
+		await axios
+			.patch(`http://localhost:3300/api/products/` + update.id, update)
 			.then((response) => {
 				resolve({ data: response.data })
 			})

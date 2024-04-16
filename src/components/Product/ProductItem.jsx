@@ -45,11 +45,11 @@ const ProductItem = ({ data, id }) => {
 			dispatch(addToCartAsync(newItem)).then(() => setOpen(false))
 		} else if (
 			carts.filter(function (cart) {
-				return cart.Product.id === id && JSON.parse(cart.colors).name === selectedColor.name
+				return cart.Product.id === id && JSON.parse(cart.colors)?.name === selectedColor?.name
 			}).length > 0
 		) {
 			const cartUpdate = carts.find(function (cart) {
-				return cart.Product.id === id && JSON.parse(cart.colors).name === selectedColor.name
+				return cart.Product.id === id && JSON.parse(cart.colors)?.name === selectedColor?.name
 			})
 
 			const updateItem = {
@@ -78,7 +78,7 @@ const ProductItem = ({ data, id }) => {
 	return (
 		<>
 			<div
-				className="shadow-xl rounded-lg transition ease-in-out dark:shadow-gray-700 dark:bg-gray-700 hover:scale-105 duration-150 cursor-pointer w-1/5 lg:w-full max-sm:w-full m-2 mb-5"
+				className="shadow-xl rounded-lg transition ease-in-out dark:shadow-gray-700 dark:bg-gray-700 hover:scale-105 duration-150 cursor-pointer w-1/5 lg:w-full max-sm:w-full mb-5"
 				onClick={() => navigate('/category/' + id)}
 			>
 				<div className="group rounded-lg relative border-solid border dark:border-gray-200">
@@ -189,7 +189,7 @@ const ProductItem = ({ data, id }) => {
 								<div className="flex items-center space-x-3">
 									{JSON.parse(data?.colors).map((color) => (
 										<RadioGroup.Option
-											key={color.name}
+											key={color?.name}
 											value={color}
 											className={({ active }) =>
 												classNames(
@@ -201,7 +201,7 @@ const ProductItem = ({ data, id }) => {
 											}
 										>
 											<RadioGroup.Label as="span" className="sr-only">
-												{color.name}
+												{color?.name}
 											</RadioGroup.Label>
 											<span
 												aria-hidden="true"
@@ -221,14 +221,16 @@ const ProductItem = ({ data, id }) => {
 
 						<div className="flex items-start justify-center">
 							<button
-								className="bg-secondary hover:bg-primary/90 py-1 px-4 rounded-lg font-bold text-white text-3xl"
+								className="bg-secondary hover:bg-primary/90 py-1 px-4 rounded-l-lg font-bold text-white text-3xl"
 								onClick={() => setQuantity((prev) => prev - 1)}
 							>
 								-
 							</button>
-							<span className="py-2 px-6 rounded-lg text-2xl text-primary">{quantity}</span>
+							<span className="py-1 px-4 text-2xl h-full text-primary border border-primary">
+								{quantity}
+							</span>
 							<button
-								className="bg-secondary hover:bg-primary/90 py-1 px-3 rounded-lg font-bold text-white text-3xl"
+								className="bg-secondary hover:bg-primary/90 py-1 px-3 rounded-r-lg font-bold text-white text-3xl"
 								onClick={() => setQuantity((prev) => prev + 1)}
 							>
 								+
