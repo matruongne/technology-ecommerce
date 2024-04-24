@@ -6,9 +6,9 @@ import { createConversation, getConversation } from './../redux/Slices/Chat/chat
 import { IoSend } from 'react-icons/io5'
 import { MdOutlineRemove } from 'react-icons/md'
 import axios from 'axios'
+import MessageList from '../components/Message/MessageList'
 
 const socket = io.connect('http://localhost:3200')
-const isoDateFormatRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/
 
 function Chat() {
 	const dispatch = useDispatch()
@@ -27,6 +27,7 @@ function Chat() {
 					name: userInfo?.name,
 					email: userInfo.email,
 				},
+				room: conversation?.name,
 				body: currentMessage,
 				createdAt: new Date(Date.now()).getHours() + ':' + new Date(Date.now()).getMinutes(),
 			}
@@ -44,10 +45,11 @@ function Chat() {
 		}
 	}
 
-	console.log(conversation)
+	// console.log(conversation)
 
 	useEffect(() => {
 		socket.off('receive_message').on('receive_message', (data) => {
+			console.log(data)
 			setMessageList((list) => [...list, data])
 		})
 	}, [socket])
@@ -56,7 +58,7 @@ function Chat() {
 		if (userInfo?.id) {
 			getConversation(userInfo?.id).then((data) => {
 				setConversation(data.data?.conversation)
-				socket.emit('join_room', conversation?.name)
+				socket.emit('join_room', data.data?.conversation?.name)
 			})
 		}
 	}, [userInfo])
@@ -65,7 +67,7 @@ function Chat() {
 	const ChatNow = () => {
 		if (!conversation) {
 			createConversation({
-				user1Id: '2346ef02fb8441d7a14175ed',
+				user1Id: '650d8219166c453f876de4e6',
 				user2Id: userInfo?.id,
 				name: userInfo?.id,
 			})
@@ -100,61 +102,7 @@ function Chat() {
 						</div>
 						<MdOutlineRemove className="text-white font-bold text-xl hover:bg-gray-200 rounded-full hover:text-gray-800" />
 					</div>
-					<div className="relative bg-gray-100 border border-secondary w-full h-[335px] pt-45 pb-70">
-						<div className="w-full h-full overflow-y-scroll overflow-x-hidden">
-							{messageList?.map((messageContent) => {
-								return (
-									<div
-										className={`h-auto p-3 flex ${
-											userInfo?.id === messageContent.senderId?._id
-												? 'justify-end'
-												: 'justify-start'
-										}`}
-									>
-										<div
-											className={`flex justify-center flex-col ${
-												userInfo?.id === messageContent.senderId?._id ? 'items-end' : 'items-start'
-											}`}
-										>
-											<div
-												className={`w-fit h-auto min-h-10 max-w-32 bg-secondary/80 rounded-lg text-white flex items-center p-1 mx-1 break-words ${
-													userInfo?.id === messageContent.senderId?._id
-														? 'justify-end'
-														: 'justify-start bg-yellow-400'
-												}`}
-											>
-												<p>{messageContent.body}</p>
-											</div>
-											<div
-												className={`flex ${
-													userInfo?.id === messageContent.senderId?._id
-														? 'justify-end'
-														: 'justify-start'
-												}`}
-											>
-												<p className="text-xs text-gray-500">
-													{isoDateFormatRegex.test(messageContent.createdAt)
-														? new Date(messageContent.createdAt)
-																.getHours()
-																.toString()
-																.padStart(2, '0') +
-														  ':' +
-														  new Date(messageContent.createdAt)
-																.getMinutes()
-																.toString()
-																.padStart(2, '0')
-														: messageContent.createdAt}
-												</p>
-												<p className="ml-1 text-xs text-gray-500 font-semibold">
-													{messageContent.senderId?.name || messageContent.senderId?.email}
-												</p>
-											</div>
-										</div>
-									</div>
-								)
-							})}
-						</div>
-					</div>
+					<MessageList userInfo={userInfo} messageList={messageList} />
 					<div className="h-10 border-t-0 border border-secondary flex">
 						<input
 							type="text"

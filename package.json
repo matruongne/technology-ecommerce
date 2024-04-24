@@ -1,6 +1,7 @@
 {
 	"name": "technology-ecommerce",
 	"version": "0.1.0",
+	"proxy": "http://localhost:8080",
 	"private": true,
 	"dependencies": {
 		"@cloudinary/react": "^1.13.0",

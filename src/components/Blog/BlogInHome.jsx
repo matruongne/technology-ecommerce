@@ -28,9 +28,9 @@ const Blog = ({ posts }) => {
 									}}
 								>
 									<div className="cursor-pointer bg-gray-200 dark:bg-gray-800 dark:shadow-[3.0px_6.0px_18.0px_rgba(0,0,0,1.88)] shadow-[3.0px_6.0px_18.0px_rgba(0,0,0,0.18)] rounded-2xl">
-										{post.images.length > 0 ? (
+										{post?.images.length > 0 ? (
 											<img
-												src={post.images[0]}
+												src={post?.images[0]}
 												alt={post.title}
 												className="rounded-t-2xl object-cover w-[370px] h-[250px]"
 											/>
@@ -45,9 +45,9 @@ const Blog = ({ posts }) => {
 											</div>
 											<div className="flex items-end justify-between my-4 m-8">
 												<div className="flex items-center">
-													{post.poster[0].images ? (
+													{post?.poster[0]?.images ? (
 														<img
-															src={post.poster[0].images}
+															src={post?.poster[0]?.images}
 															className="w-[40px] h-[40px] rounded-full border-primary border"
 														/>
 													) : (
@@ -55,7 +55,7 @@ const Blog = ({ posts }) => {
 													)}
 													<div className="ml-2">
 														<h3 className="font-bold text-base text-gray-700 dark:text-gray-400">
-															{post.poster[0].name || post.poster[0].email}
+															{post.poster[0]?.name || post.poster[0]?.email}
 														</h3>
 														<h3 className="text-gray-500 text-xs">
 															<p className="block leading-relaxed antialiased">
